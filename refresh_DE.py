@@ -90,12 +90,15 @@ class GermanHoliday(object):
         api_url = self.api_url
 
         header = "# Holiday data provided by ipty.de\n"\
-                 +"#\t%s" % (api_url)\
-                 +"#\tGenerated%s" % (datetime.datetime.strftime(datetime.datetime.today(), "%c"))
+                 +"#\t%s\n" % (api_url)\
+                 +"#\tGenerated%s\n" % (datetime.datetime.strftime(datetime.datetime.today(), "%c"))
+
+        return header
 
     def format_output(self):
         holidays = self.holidays
         for holiday in holidays:
+            pass
 
 
 
@@ -106,3 +109,4 @@ if __name__ == "__main__":
     holidays = GermanHoliday(state)
     print(holidays.api_url)
     print(holidays.get_holidays())
+    print(holidays.get_header())
