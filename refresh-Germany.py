@@ -32,7 +32,7 @@ import os
 import json
 import datetime
 import time
-import urllib
+import urllib.request
 
 from docopt import docopt
 
@@ -56,16 +56,27 @@ class GermanHoliday(object):
             state_abbr = ','.join(german_states)
 
         api_url = 'https://ipty.de/feiertag/api.php'\
-         + '?do=getFeiertage'\
-         + '&loc=' + state_abbr\
-         + '&outformat=Y-m-d'\
-         + '&jahr='+str(year)
+                  + '?do=getFeiertage' \
+                  + '&loc=' + state_abbr\
+                  + '&outformat=Y-m-d'\
+                  + '&jahr='+str(year)
 
         return api_url
+
+    def get_holidays(self):
+        """
+        :return: The holidays in dictionary form
+        :rtype: dict
+        """
+        holidays_site = urllib.request.urlopen(self.api_url)
+        holidays_json = holidays_site.read().decode()
+        holidays = json.loads(holidays_json)
+        return holidays
 
 if __name__ == "__main__":
     arguments = docopt(__doc__, version="Refresh holidays germany 1.0")
     state = arguments['--state']
 
-    holidays = GermanHoliday.get_holiday_url(state)
-    print(holidays)
+    holidays = GermanHoliday(state)
+    print(holidays.api_url)
+    print(holidays.get_holidays())
