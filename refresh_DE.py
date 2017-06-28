@@ -85,6 +85,11 @@ class GermanHoliday(object):
 
         return holidays_dict
 
+    def format_output(self):
+        holidays = self.holidays
+        
+
+
 if __name__ == "__main__":
     arguments = docopt(__doc__, version="Refresh holidays germany 1.0")
     state = arguments['--state']
