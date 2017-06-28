@@ -41,6 +41,7 @@ class GermanHoliday(object):
     def __init__(self, state_abbr=None):
         self.api_url = self.get_holiday_url(state_abbr)
         self.holidays = self.get_holidays()
+        self.header = self.get_header()
 
     @staticmethod
     def get_holiday_url(state_abbr, year=2017):
@@ -85,9 +86,17 @@ class GermanHoliday(object):
 
         return holidays_dict
 
+    def get_header(self):
+        api_url = self.api_url
+
+        header = "# Holiday data provided by ipty.de\n"\
+                 +"#\t%s" % (api_url)\
+                 +"#\tGenerated%s" % (datetime.datetime.strftime(datetime.datetime.today(), "%c"))
+
     def format_output(self):
         holidays = self.holidays
-        
+        for holiday in holidays:
+
 
 
 if __name__ == "__main__":
