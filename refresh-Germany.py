@@ -40,9 +40,19 @@ from docopt import docopt
 class GermanHoliday(object):
     def __init__(self, state_abbr=None):
         self.api_url = self.get_holiday_url(state_abbr)
+        self.holidays = self.get_holidays()
 
     @staticmethod
-    def get_holiday_url(state_abbr, year='2017'):
+    def get_holiday_url(state_abbr, year=2017):
+        """
+        Compile the URL to retrieve the dates from
+        :param state_abbr: Abbreviation of the German state to retrieve the holidays for
+        :type state_abbr: str
+        :param year: Year for which to retrieve the holiday dates
+        :type year: int
+        :return: URL to retrieve the dates from
+        :rtype: str
+        """
         german_states = [
             "BW", "BY", "BE", "BB",
             "HB", "HH", "HE", "MV",
@@ -58,20 +68,22 @@ class GermanHoliday(object):
         api_url = 'https://ipty.de/feiertag/api.php'\
                   + '?do=getFeiertage' \
                   + '&loc=' + state_abbr\
-                  + '&outformat=Y-m-d'\
+                  + '&outformat=Y_m_d'\
                   + '&jahr='+str(year)
 
         return api_url
 
     def get_holidays(self):
         """
+        Retrieve the dates and convert them to a dictionary
         :return: The holidays in dictionary form
         :rtype: dict
         """
         holidays_site = urllib.request.urlopen(self.api_url)
         holidays_json = holidays_site.read().decode()
-        holidays = json.loads(holidays_json)
-        return holidays
+        holidays_dict = json.loads(holidays_json)
+
+        return holidays_dict
 
 if __name__ == "__main__":
     arguments = docopt(__doc__, version="Refresh holidays germany 1.0")
