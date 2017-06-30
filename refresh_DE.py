@@ -124,9 +124,6 @@ class GermanHoliday(object):
         return header+formated_holidays
 
 
-
-
-
 if __name__ == "__main__":
     arguments = docopt(__doc__, version="Refresh holidays germany 1.0")
     state = arguments['--state']
