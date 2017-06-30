@@ -124,11 +124,17 @@ class GermanHoliday(object):
         return header+formated_holidays
 
 
-if __name__ == "__main__":
+def main():
+    """ Create the output
+    :return: None
+    :rtype: null
+    """
     arguments = docopt(__doc__, version="Refresh holidays germany 1.0")
     state = arguments['--state']
 
-    holidays = GermanHoliday(state)
-    print(holidays.api_url)
-    print(holidays.get_holidays())
-    print(holidays.get_header())
+    de_holidays = GermanHoliday(state)
+    print(de_holidays.format_output())
+
+
+if __name__ == "__main__":
+    main()
