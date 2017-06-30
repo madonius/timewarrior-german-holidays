@@ -99,9 +99,22 @@ class GermanHoliday(object):
         return header
 
     def format_output(self):
+        """
+        Generate formatted output in the timewarrior holiday format
+        :return: Timewarrior holidays for Germany
+        :rtype: str
+        """
         holidays = self.holidays
+        header = self.get_header()
+        formated_holidays = ""
+
         for holiday in holidays:
-            pass
+            holiday_format = "    %s = %s\n" % (holiday['date'], holiday['title'])
+            formated_holidays += holiday_format
+
+        return header+formated_holidays
+
+
 
 
 
