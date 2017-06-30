@@ -28,10 +28,8 @@ Options:
                     TH: Thüringen
 """
 
-import os
 import json
 import datetime
-import time
 import urllib.request
 
 from docopt import docopt
