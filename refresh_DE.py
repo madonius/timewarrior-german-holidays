@@ -36,7 +36,12 @@ from docopt import docopt
 
 
 class GermanHoliday(object):
+    """ Retrieves the German holidys and preformats them for timewarrior """
     def __init__(self, state_abbr=None):
+        """
+        :param state_abbr: The abbreviation for the state
+        :type state_abbr: str
+        """
         self.api_url = self.get_holiday_url(state_abbr)
         self.holidays = self.get_holidays()
         self.header = self.get_header()
@@ -85,6 +90,12 @@ class GermanHoliday(object):
         return holidays_dict
 
     def get_header(self):
+        """
+        Header for the timewarrior holiday file
+        :return: Timewarrior hiliday file header
+        :rtype: str
+        """
+
         api_url = self.api_url
 
         header = "# Holiday data provided by ipty.de\n"\
