@@ -90,8 +90,11 @@ class GermanHoliday(object):
         api_url = self.api_url
 
         header = "# Holiday data provided by ipty.de\n"\
-                 +"#\t%s\n" % (api_url)\
-                 +"#\tGenerated%s\n" % (datetime.datetime.strftime(datetime.datetime.today(), "%c"))
+                 +"#\t%s\n" % api_url\
+                 +"#\tGenerated%s\n" % datetime.datetime.strftime(datetime.datetime.today(), "%c")\
+                 +"\n"\
+                 +"define Holidays:\n"\
+                 +"  de-DE:\n"
 
         return header
 
