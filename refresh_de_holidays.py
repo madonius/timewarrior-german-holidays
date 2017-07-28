@@ -102,7 +102,7 @@ class GermanHoliday(object):
                  +"#\t%s\n" % api_url\
                  +"#\tGenerated%s\n" % datetime.datetime.strftime(datetime.datetime.today(), "%c")\
                  +"\n"\
-                 +"define Holidays:\n"\
+                 +"define holidays:\n"\
                  +"  de-DE:\n"
 
         return header
