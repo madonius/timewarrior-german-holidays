@@ -4,7 +4,7 @@
 """ refresh-germany.py: A script retrieving the german holidays for taskwarrior
 
 Usage:
-    refresh-germany.py [--state <German State abbreviated>]
+    refresh-germany.py [--state <German State abbreviated> --year <year>]
     refresh-germany.py (-h | --help)
 
 Options:
@@ -26,10 +26,11 @@ Options:
                     ST: Sleswig-Holstein
                     SH: Sachen-Anhalt
                     TH: Thüringen
+    --year <year>   The year for which data shall be returned
 """
 
 import json
-import datetime
+from datetime import datetime
 import urllib.request
 
 from docopt import docopt
@@ -37,17 +38,19 @@ from docopt import docopt
 
 class GermanHoliday(object):
     """ Retrieves the German holidys and preformats them for timewarrior """
-    def __init__(self, state_abbr=None):
+    def __init__(self, state_abbr=None, year=None):
         """
         :param state_abbr: The abbreviation for the state
         :type state_abbr: str
         """
-        self.api_url = self.get_holiday_url(state_abbr)
+        if not year:
+            year = datetime.now().year
+        self.api_url = self.get_holiday_url(state_abbr, year)
         self.holidays = self.get_holidays()
         self.header = self.get_header()
 
     @staticmethod
-    def get_holiday_url(state_abbr, year=2017):
+    def get_holiday_url(state_abbr, year):
         """
         Compile the URL to retrieve the dates from
         :param state_abbr: Abbreviation of the German state to retrieve the holidays for
@@ -72,7 +75,7 @@ class GermanHoliday(object):
         api_url = 'https://ipty.de/feiertag/api.php'\
                   + '?do=getFeiertage' \
                   + '&loc=' + state_abbr\
-                  + '&outformat=Y_m_d'\
+                  + '&outformat=Y-m-d'\
                   + '&jahr='+str(year)
 
         return api_url
@@ -100,7 +103,7 @@ class GermanHoliday(object):
 
         header = "# Holiday data provided by ipty.de\n"\
                  +"#\t%s\n" % api_url\
-                 +"#\tGenerated%s\n" % datetime.datetime.strftime(datetime.datetime.today(), "%c")\
+                 +"#\tGenerated %s\n" % datetime.strftime(datetime.today(), "%c")\
                  +"\n"\
                  +"define holidays:\n"\
                  +"  de-DE:\n"
@@ -118,7 +121,7 @@ class GermanHoliday(object):
         formated_holidays = ""
 
         for holiday in holidays:
-            holiday_format = "    %s = %s\n" % (holiday['date'], holiday['title'])
+            holiday_format = "    %s = %s\n" % (holiday['date'].replace('-','_'), holiday['title'])
             formated_holidays += holiday_format
 
         return header+formated_holidays
@@ -131,8 +134,9 @@ def main():
     """
     arguments = docopt(__doc__, version="Refresh holidays germany 1.0")
     state = arguments['--state']
+    year = arguments['--year']
 
-    de_holidays = GermanHoliday(state)
+    de_holidays = GermanHoliday(state, year)
     print(de_holidays.format_output())
 
 
